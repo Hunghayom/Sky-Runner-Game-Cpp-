@@ -8,7 +8,6 @@ const int SCREEN_HEIGHT = 720;
 
 Game *game = nullptr;
 
-
 int main(int argc, char *args[])
 {
     game = new Game();
@@ -27,4 +26,3 @@ int main(int argc, char *args[])
 
     return 0;
 }
-
