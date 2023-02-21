@@ -6,6 +6,12 @@ Game::Game()
 Game::~Game()
 {}
 
+void Game::setRunning(bool running)
+{
+    isRunning = running;
+}
+
+
 void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bool fullscreen)
 {
     int flags = 0;
@@ -17,7 +23,7 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         {
             cout << "SDL could not initialize! SDL_Error:" << SDL_GetError() << "\n";
-            isRunning = false;
+            setRunning(false);
         }
     else
     {
@@ -26,12 +32,12 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
         if (window == NULL)
         {
             cout << "Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
-            isRunning = false;
+            setRunning(false);
         }
         else
         {
             cout << "Window created! \n" << "\t window = " << window << "\n";
-            isRunning == true;
+            setRunning(true);
             cout << "\t isRunning = " << isRunning << "\n";
         }
         renderer = SDL_CreateRenderer(window, -1, 0);
@@ -39,16 +45,16 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
         if (renderer == NULL)
         {
             cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
-            isRunning = false;
+            setRunning(false);
         }
         else
         {
             SDL_SetRenderDrawColor(renderer,123,200,221,255);
             cout << "Renderer created! \n";
             cout << "\t isRunning = " << isRunning << "\n";
-            isRunning == true;
+            setRunning(true);
         }
-        isRunning == true;
+        setRunning(true);
     }
     cout << "\t isRunning = " << isRunning << "\n";
 }
