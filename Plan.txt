@@ -1,0 +1,73 @@
+Terrain:
+    - Using noise to generate terrain:
+        + "Base layer" : Generate base terrain
+        + "Erosion layer":
+            * Higher erosion -> Lower and smoothier terrain
+            * Lower errorion -> Higher and rougher terrain
+        + "Temperature layer":
+            * Higher temperature -> Higher errosion
+    - Using noise to generate cave
+    - High: 0 (Negative Y) -> 64 (Positive Y)
+    - Size: -200 (Negative X) -> 200 (Positive X)
+    - Sea level: 30
+    - Biome:
+        + Plain: Almost flat area with passive mob can spawn
+        + Forest: Contain a lot of tree with passive mob can spawn
+        + Ocean: A lot of water in surface
+        + Beach: Sand replace for dirt on top
+
+Block_informations:
+    + Id: integer number from 0
+    + Name: string
+    + Size (in block): (X,Y). Default: (1,1) 
+    + Walkthrought by player: T/F
+    + Breakable with hand: h(T-time) / h(F)
+    + Breakable with wooden pickaxe: wp(T-time) / wp(F)
+    + Breakable with stone pickaxe: sp(T-time) / sp(F)
+    + Breakable with iron pickaxe: ip(T-time) / hp(F)
+    + Breakable with wooden axe: wa(T-time) / wa(F)
+    + Breakable with stone axe: sa(T-time) / sa(F)
+    + Breakable with iron axe: ia(T-time) / ha(F)
+    + Light lever (0-9)
+    + Hostile mob can spawn: T/F
+    + Passive mob can spawn: T/F
+
+Blocks:
+    - Air:          0   air         (1,1)   T   h(F)    w(F)        s(F)        i(F)        F   T   T
+    - Bedrock:      1   bedrock     (1,1)   F   h(F)    w(F)        s(F)        i(F)        F   T   T
+    - Dirt:         2   dirt        (1,1)   F   h(T-1)  wp(T-10)    sp(T-10)    ip(T-10)    F   T   T
+    - Grass:        3   grass       (1,1)   F   h(T-1)  wp(T-10)    sp(T-10)    ip(T-10)    F   T   T
+    - Sand:         4   sand        (1,1)   F   h(T-1)  wp(T-10)    sp(T-10)    ip(T-10)    T   T   T
+    - Stone:        5   stone       (1,1)   F   h(F)    wp(T-5)     sp(T-4)     ip(T-2)     F   T   T
+    - Cobblestone:  6   cobblestone (1,1)   F   h(F)    wp(T-6)     sp(T-5)     ip(T-3)     F   T   T
+    - Oak_wood:     7   oak_wood    (1,1)   T   h(T-4)  wp(T-10)    sp(T-10)    ip(T-10)    F   T   T
+    - Oak_leaves:   8   oak_leaves  (1,1)   T   h(T-1)  wp(T-10)    sp(T-10)    ip(T-10)    T   T   T
+    - Coal_ore:     9   coal_ore    (1,1)   F   h(T-10) wp(T-10)    sp(T-10)    ip(T-10)    F   T   T
+    - Iron_ore:     10  iron_ore    (1,1)   F   h(T-10) wp(T-10)    sp(T-10)    ip(T-10)    F   T   T
+    - Gold_ore:     11  gold_ore    (1,1)   F   h(T-10) wp(T-10)    sp(T-10)    ip(T-10)    F   T   T
+
+Surface:
+    - Oak_Tree:
+        + Can be punch by hand and axe;
+        + Drop oak_wood, apple and stick;
+Passive mob:
+    - Sheep:
+        + Spawn on top of grass;
+        + Walking around;
+        + Drop 1-2 wool when killed by player; 
+    - Cow:
+        + Spawn on top of grass;
+        + Walking around;
+        + Drop 1-2 meat and 1-2 leather when killed by player; 
+    - Trader:
+        + Spawn in Plain anf Forest biome;
+        + Moving to player within 24 blocks;
+        + Interact GUI when clicked by player;
+        + Buy leather, wool from player;
+        + Using gold for current unit;
+        + Sell gold;
+Hostile mob:
+    - Zombie:
+        + 100% spawn at night (1-4) and light-lever below 5;
+        + Moving player within 24 blocks;
+        + Taking 5 damage for player if interact;
