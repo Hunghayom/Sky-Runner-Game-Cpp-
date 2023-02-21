@@ -17,6 +17,8 @@ class Game
     public:
         Game();
         ~Game();
+        
+        void setRunning(bool running);
 
         void init(const char* tilte, int xpos, int ypost, int width, int height, bool fullscreen);
 
