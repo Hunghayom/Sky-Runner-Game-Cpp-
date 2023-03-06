@@ -11,7 +11,6 @@ using namespace std;
 class Game
 {
 private:
-    int cnt = 0;
     bool isRunning;
 
     // Window to render to
@@ -21,24 +20,9 @@ private:
     // Current displayed image
     SDL_Surface *image = NULL;
 
-
-    //--------------------------------------------------------------------------------
-
     //The surface contained by the window
     SDL_Surface* gScreenSurface = NULL;
 
-    // Key press surfaces constants
-    enum KeyPressSurfaces
-    {
-        KEY_PRESS_SURFACE_DEFAULT,
-        KEY_PRESS_SURFACE_UP,
-        KEY_PRESS_SURFACE_DOWN,
-        KEY_PRESS_SURFACE_LEFT,
-        KEY_PRESS_SURFACE_RIGHT,
-        KEY_PRESS_SURFACE_TOTAL
-    };
-    // The images that correspond to a keypress
-    SDL_Surface *gKeyPressSurfaces[KEY_PRESS_SURFACE_TOTAL];
 
 public:
     Game();
@@ -48,10 +32,9 @@ public:
 
     void init(const char *tilte, int xpos, int ypost, int width, int height, bool fullscreen);
 
-    SDL_Surface *loadSurface(string path);
+    void loadTexture (SDL_Texture* &texture, SDL_Renderer* renderer, const char* path);
 
-    bool loadBackgroundMedia();
-    void blitSurface();
+    void render (SDL_Renderer* renderer, SDL_Texture* texture);
 
     SDL_Window* getWindow();
     SDL_Renderer* getRenderer();    
