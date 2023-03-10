@@ -72,53 +72,11 @@ SDL_Renderer *Game::getRenderer()
 
 //--------------------------------------------------
 
+
+
 void Game::handleEvent()
 {
 
-    SDL_Event event;
-    SDL_PollEvent(&event);
-
-    SDL_Texture *texture[5];
-    loadTexture(texture[0], getRenderer(), "Image/Background/pixel-art.png");
-    loadTexture(texture[1], getRenderer(), "Image/up.bmp");
-    loadTexture(texture[2], getRenderer(), "Image/down.bmp");
-    loadTexture(texture[3], getRenderer(), "Image/left.bmp");
-    loadTexture(texture[4], getRenderer(), "Image/right.bmp");
-
-    render(getRenderer(), texture[0]);
-
-    SDL_PollEvent(&event);
-    switch (event.type)
-    {
-    case SDL_QUIT:
-        setRunning(false);
-        break;
-    case SDLK_ESCAPE:
-        setRunning(false);
-        break;
-    case SDL_KEYDOWN:
-        switch (event.key.keysym.sym)
-        {
-        case SDLK_UP:
-            cout << "up \n";
-            render(getRenderer(), texture[1]);
-            break;
-        case SDLK_DOWN:
-            cout << "down \n";
-            render(getRenderer(), texture[2]);
-            break;
-        case SDLK_LEFT:
-            cout << "left \n";
-            render(getRenderer(), texture[3]);
-            break;
-        case SDLK_RIGHT:
-            cout << "right \n";
-            render(getRenderer(), texture[4]);
-            break;
-        }
-    default:
-        break;
-    }
 }
 
 void Game::update()
