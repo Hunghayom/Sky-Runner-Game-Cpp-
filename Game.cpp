@@ -1,12 +1,9 @@
 #include "Game.hpp"
 
 Game::Game()
-{
-}
-
+{}
 Game::~Game()
-{
-}
+{}
 
 void Game::setRunning(bool running)
 {
@@ -48,13 +45,7 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     }
 }
 
-void Game::loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path)
-{
-    texture = NULL;
-    texture = IMG_LoadTexture(renderer, path);
-    if (texture == NULL)
-        std::cout << "Fail to load texture: " << SDL_GetError() << '\n';
-}
+
 
 void Game::render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
@@ -72,11 +63,8 @@ SDL_Renderer *Game::getRenderer()
 
 //--------------------------------------------------
 
-
-
 void Game::handleEvent()
 {
-
 }
 
 void Game::update()
