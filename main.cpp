@@ -1,7 +1,7 @@
 // Using SDL and standard IO
 #include <SDL2/SDL.h>
 #include "Game.hpp"
-#include "TextureLoader.cpp"
+#include "TextureLoader.hpp"
 
 // Screen dimension constants
 const int SCREEN_WIDTH = 1280;
@@ -9,13 +9,16 @@ const int SCREEN_HEIGHT = 720;
 
 Game *game = nullptr;
 
-void render(SDL_Renderer *renderer, SDL_Texture *texture)
-{
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
-}
+
 
 int main(int argc, char *args[])
 {
+    int const FPS = 60;
+    int const frameDelay = 1000 / FPS;
+
+    Uint32 frameStart;
+    int frameTime;
+
     game = new Game();
 
     game->init("SDL Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
@@ -25,48 +28,56 @@ int main(int argc, char *args[])
 
     while (game->running())
     {
-        game->handleEvent();
-        SDL_Event event;
 
-        render(game->getRenderer(), texture[0]); 
-        
+        frameStart = SDL_GetTicks();
+
+        game->backgroundrender(game->getRenderer(), texture[0]);  
+
+        SDL_Event event;
         SDL_PollEvent(&event);
         switch (event.type)
         {
         case SDL_QUIT:
-            game->setRunning(false);
-            break;
+           game->setRunning(false);
+           break;
         case SDL_KEYDOWN:
-            switch (event.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
+           switch (event.key.keysym.sym)
+           {
+           case SDLK_ESCAPE:
                 game->setRunning(false);
                 break;
             case SDLK_UP:
-                render(game->getRenderer(), texture[1]);
+                game->render(game->getRenderer(), texture[1]);
                 cout << "up \n";
                 break;
             case SDLK_DOWN:
-                render(game->getRenderer(), texture[2]);
+                game->render(game->getRenderer(), texture[2]);
                 cout << "down \n";
                 break;
             case SDLK_LEFT:
-                render(game->getRenderer(), texture[3]);
+                game->render(game->getRenderer(), texture[3]);
                 cout << "left \n";
                 break;
             case SDLK_RIGHT:
-                render(game->getRenderer(), texture[4]);
+                game->render(game->getRenderer(), texture[4]);
                 cout << "right \n";
                 break;
             }
         default:
             break;
         }
-        // game->update();
-        SDL_RenderPresent(game->getRenderer());
-    }
-    //game->update();
-    game->clean();
 
+        game->update();
+        SDL_RenderPresent(game->getRenderer()); 
+        
+        frameTime = SDL_GetTicks() - frameStart;
+        
+        if(frameDelay > frameTime)
+        {
+            SDL_Delay(frameDelay - frameTime);
+        }
+    }
+
+    game->clean();
     return 0;
 }

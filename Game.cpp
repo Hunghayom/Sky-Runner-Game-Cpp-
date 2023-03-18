@@ -1,9 +1,15 @@
 #include "Game.hpp"
 
+//--------------------------------------------------
+SDL_Rect sourceRect, destinationRect;
+//--------------------------------------------------
+
 Game::Game()
-{}
+{
+}
 Game::~Game()
-{}
+{
+}
 
 void Game::setRunning(bool running)
 {
@@ -45,11 +51,11 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     }
 }
 
-
-
 void Game::render(SDL_Renderer *renderer, SDL_Texture *texture)
 {
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, &destinationRect);
+    SDL_RenderPresent(renderer);
 }
 
 SDL_Window *Game::getWindow()
@@ -65,10 +71,16 @@ SDL_Renderer *Game::getRenderer()
 
 void Game::handleEvent()
 {
+    
 }
 
 void Game::update()
 {
+    cnt++;
+    destinationRect.h = 320;
+    destinationRect.w = 320;
+    destinationRect.x = cnt;
+    // destinationRect.y = cnt;
 }
 
 void Game::clean()
