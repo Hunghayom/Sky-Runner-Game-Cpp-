@@ -8,6 +8,7 @@ const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
 Game *game = nullptr;
+TextureManager *textureManager = nullptr;
 
 
 
@@ -24,14 +25,14 @@ int main(int argc, char *args[])
     game->init("SDL Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
     SDL_Texture *texture[5];
-    game->Texture_loader(texture,5);
+    textureManager->Texture_loader(texture,5);
 
     while (game->running())
     {
 
-        frameStart = SDL_GetTicks();
+        frameStart = SDL_GetTicks64();
 
-        game->backgroundrender(game->getRenderer(), texture[0]);  
+        textureManager->backgroundrender(game->getRenderer(), texture[0]);  
 
         SDL_Event event;
         SDL_PollEvent(&event);
@@ -70,7 +71,7 @@ int main(int argc, char *args[])
         game->update();
         SDL_RenderPresent(game->getRenderer()); 
         
-        frameTime = SDL_GetTicks() - frameStart;
+        frameTime = SDL_GetTicks64() - frameStart;
         
         if(frameDelay > frameTime)
         {

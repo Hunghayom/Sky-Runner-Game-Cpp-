@@ -10,6 +10,7 @@ using namespace std;
 
 class Game
 {
+    friend class TextureManage;
 private:
     int cnt = 0;
     
@@ -34,11 +35,7 @@ public:
 
     void init(const char *tilte, int xpos, int ypost, int width, int height, bool fullscreen);
 
-    void loadTexture (SDL_Texture* &texture, SDL_Renderer* renderer, const char* path);
-
-    void Texture_loader(SDL_Texture *texture[], int n);
-    void backgroundrender(SDL_Renderer *renderer, SDL_Texture *texture);
-
+    
     void render (SDL_Renderer* renderer, SDL_Texture* texture);
 
     SDL_Window* getWindow();
