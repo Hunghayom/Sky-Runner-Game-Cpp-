@@ -51,12 +51,7 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     }
 }
 
-void Game::render(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect sourceRect, SDL_Rect destinationRect)
-{
-    //SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, &destinationRect);
-    SDL_RenderPresent(renderer);
-}
+
 
 SDL_Window *Game::getWindow()
 {
@@ -67,18 +62,12 @@ SDL_Renderer *Game::getRenderer()
     return renderer;
 }
 
-//--------------------------------------------------
-
 void Game::handleEvent()
-{
-    
+{  
 }
 
 void Game::update()
 {
-    //destinationRect.h = 35;
-    //destinationRect.w = 42;
-    // destinationRect.y = cnt;
 }
 
 void Game::clean()
