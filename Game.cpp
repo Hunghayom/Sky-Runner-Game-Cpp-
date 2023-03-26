@@ -1,7 +1,7 @@
 #include "Game.hpp"
 
 //--------------------------------------------------
-SDL_Rect sourceRect, destinationRect;
+//SDL_Rect sourceRect, destinationRect;
 //--------------------------------------------------
 
 Game::Game()
@@ -51,9 +51,9 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     }
 }
 
-void Game::render(SDL_Renderer *renderer, SDL_Texture *texture)
+void Game::render(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect sourceRect, SDL_Rect destinationRect)
 {
-    SDL_RenderClear(renderer);
+    //SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, texture, NULL, &destinationRect);
     SDL_RenderPresent(renderer);
 }
@@ -76,10 +76,8 @@ void Game::handleEvent()
 
 void Game::update()
 {
-    cnt++;
-    destinationRect.h = 320;
-    destinationRect.w = 320;
-    destinationRect.x = cnt;
+    //destinationRect.h = 35;
+    //destinationRect.w = 42;
     // destinationRect.y = cnt;
 }
 

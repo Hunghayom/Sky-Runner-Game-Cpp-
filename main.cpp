@@ -1,15 +1,14 @@
 // Using SDL and standard IO
 #include <SDL2/SDL.h>
-#include "Game.hpp"
 #include "TextureLoader.hpp"
+#include "Game.hpp"
+
 
 // Screen dimension constants
 const int SCREEN_WIDTH = 1280;
 const int SCREEN_HEIGHT = 720;
 
 Game *game = nullptr;
-TextureManager *textureManager = nullptr;
-
 
 
 int main(int argc, char *args[])
@@ -17,6 +16,18 @@ int main(int argc, char *args[])
     int const FPS = 60;
     int const frameDelay = 1000 / FPS;
 
+    SDL_Rect sourceRect, destinationRect;
+
+    sourceRect.x = 0;
+    sourceRect.y = 0;
+    sourceRect.w = 35;
+    sourceRect.h = 42;
+
+    destinationRect.x = 100;
+    destinationRect.y = 100;
+    destinationRect.w = 35;
+    destinationRect.h = 42;
+    
     Uint32 frameStart;
     int frameTime;
 
@@ -24,15 +35,16 @@ int main(int argc, char *args[])
 
     game->init("SDL Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
-    SDL_Texture *texture[5];
-    textureManager->Texture_loader(texture,5);
+    SDL_Texture *texture[2];
+    enum texture_type {BACKGROUND, CHARACTER};
+    game->Texture_loader(texture,2);
+
+    game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+    game->load_character(game->getRenderer(), texture[CHARACTER], sourceRect, destinationRect);
 
     while (game->running())
     {
-
         frameStart = SDL_GetTicks64();
-
-        textureManager->backgroundrender(game->getRenderer(), texture[0]);  
 
         SDL_Event event;
         SDL_PollEvent(&event);
@@ -48,19 +60,27 @@ int main(int argc, char *args[])
                 game->setRunning(false);
                 break;
             case SDLK_UP:
-                game->render(game->getRenderer(), texture[1]);
                 cout << "up \n";
+                destinationRect.y -= 10;
+                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+                game->render(game->getRenderer(), texture[CHARACTER], sourceRect, destinationRect);
                 break;
             case SDLK_DOWN:
-                game->render(game->getRenderer(), texture[2]);
+                destinationRect.y += 10;
+                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+                game->render(game->getRenderer(), texture[CHARACTER], sourceRect, destinationRect);
                 cout << "down \n";
                 break;
             case SDLK_LEFT:
-                game->render(game->getRenderer(), texture[3]);
+                destinationRect.x -= 10;
+                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+                game->render(game->getRenderer(), texture[CHARACTER], sourceRect, destinationRect);
                 cout << "left \n";
                 break;
             case SDLK_RIGHT:
-                game->render(game->getRenderer(), texture[4]);
+                destinationRect.x += 10;
+                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+                game->render(game->getRenderer(), texture[CHARACTER], sourceRect, destinationRect);
                 cout << "right \n";
                 break;
             }

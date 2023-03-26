@@ -36,7 +36,12 @@ public:
     void init(const char *tilte, int xpos, int ypost, int width, int height, bool fullscreen);
 
     
-    void render (SDL_Renderer* renderer, SDL_Texture* texture);
+    void render (SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect sourceRect, SDL_Rect destinationRect);
+
+    void loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path);
+    void Texture_loader(SDL_Texture *texture[], int n);
+    void backgroundrender(SDL_Renderer *renderer, SDL_Texture *texture);
+    void load_character(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect sourceRect, SDL_Rect destinationRect);
 
     SDL_Window* getWindow();
     SDL_Renderer* getRenderer();    
