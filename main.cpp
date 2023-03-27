@@ -16,7 +16,10 @@ int main(int argc, char *args[])
     int const FPS = 60;
     int const frameDelay = 1000 / FPS;
 
-    Texture_box player_texture(0, 0, 35, 42, 100, 100, 35, 42);
+    Texture_box player_texture(0, 0, 35, 42, 640, 600, 35, 42);
+    Texture_box background_texture(0, 0, 1280, 720, 0, 0, 1280, 720);
+    Texture_box previous_background_texture(0, 0, 1280, 720, -1280, 0, 1280, 720);
+    Texture_box next_background_texture(0, 0, 1280, 720, 1280, 0, 1280, 720);
 
     Uint32 frameStart;
     int frameTime;
@@ -25,11 +28,12 @@ int main(int argc, char *args[])
 
     game->init("SDL Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
-    SDL_Texture *texture[2];
-    enum texture_type {BACKGROUND, CHARACTER};
-    game->Texture_loader(texture,2);
-
-    game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+    SDL_Texture *texture[4];
+    enum texture_type {PREVIOUS_BACKGROUND, BACKGROUND, NEXT_BACKGROUND, CHARACTER};
+    game->Texture_loader(texture,4);
+    
+    game->render(game->getRenderer(), texture[BACKGROUND], background_texture.get_sourceRect(), background_texture.get_destinationRect());
+    
     game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
 
     while (game->running())
@@ -50,28 +54,67 @@ int main(int argc, char *args[])
                 game->setRunning(false);
                 break;
             case SDLK_UP:
-                cout << "up \n";
-                player_texture.set_destinationRect(player_texture.get_destinationRect().x, player_texture.get_destinationRect().y - 30, player_texture.get_destinationRect().w, player_texture.get_destinationRect().h);
-                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
-                game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
                 break;
             case SDLK_DOWN:
-                player_texture.set_destinationRect(player_texture.get_destinationRect().x, player_texture.get_destinationRect().y + 30, player_texture.get_destinationRect().w, player_texture.get_destinationRect().h);
-                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
-                game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
-                cout << "down \n";
                 break;
             case SDLK_LEFT:
-                player_texture.set_destinationRect(player_texture.get_destinationRect().x - 30, player_texture.get_destinationRect().y, player_texture.get_destinationRect().w, player_texture.get_destinationRect().h);
-                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
-                game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
                 cout << "left \n";
-                break;
-            case SDLK_RIGHT:
-                player_texture.set_destinationRect(player_texture.get_destinationRect().x + 30, player_texture.get_destinationRect().y, player_texture.get_destinationRect().w, player_texture.get_destinationRect().h);
-                game->backgroundrender(game->getRenderer(), texture[BACKGROUND]);
+                SDL_RenderClear(game->getRenderer());
+
+                previous_background_texture.set_destinationRect(background_texture.get_destinationRect().x - 1280 + 40, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                game->render(game->getRenderer(), texture[PREVIOUS_BACKGROUND], previous_background_texture.get_sourceRect(), previous_background_texture.get_destinationRect());
+                cout << "\t previous_background_texture.get_destinationRect().x: " << previous_background_texture.get_destinationRect().x << endl;
+                
+                background_texture.set_destinationRect(background_texture.get_destinationRect().x + 40, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                game->render(game->getRenderer(), texture[BACKGROUND], background_texture.get_sourceRect(), background_texture.get_destinationRect());
+                cout << "\t background_texture.get_destinationRect().x: " << background_texture.get_destinationRect().x << endl;
+
+                next_background_texture.set_destinationRect(background_texture.get_destinationRect().x + 1280 + 40, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                game->render(game->getRenderer(), texture[NEXT_BACKGROUND], next_background_texture.get_sourceRect(), next_background_texture.get_destinationRect());
+                cout << "\t next_background_texture.get_destinationRect().x: " << next_background_texture.get_destinationRect().x << endl;
+
+                if (previous_background_texture.get_destinationRect().x == 0)
+                {
+                    SDL_RenderClear(game->getRenderer());
+
+                    //previous_background_texture.set_destinationRect(-1280, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                    //game->render(game->getRenderer(), texture[PREVIOUS_BACKGROUND], background_texture.get_sourceRect(), background_texture.get_destinationRect());
+                    
+                    background_texture.set_destinationRect(0, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                    game->render(game->getRenderer(), texture[BACKGROUND], background_texture.get_sourceRect(), background_texture.get_destinationRect());
+                
+                }
+
                 game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
+                
+                break;
+
+            case SDLK_RIGHT:
                 cout << "right \n";
+                SDL_RenderClear(game->getRenderer());
+
+                previous_background_texture.set_destinationRect(background_texture.get_destinationRect().x - 1280 - 40, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                game->render(game->getRenderer(), texture[PREVIOUS_BACKGROUND], previous_background_texture.get_sourceRect(), previous_background_texture.get_destinationRect());
+                cout << "\t previous_background_texture.get_destinationRect().x: " << previous_background_texture.get_destinationRect().x << endl;
+                
+                background_texture.set_destinationRect(background_texture.get_destinationRect().x - 40, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                game->render(game->getRenderer(), texture[BACKGROUND], background_texture.get_sourceRect(), background_texture.get_destinationRect());
+                cout << "\t background_texture.get_destinationRect().x: " << background_texture.get_destinationRect().x << endl;
+
+                next_background_texture.set_destinationRect(background_texture.get_destinationRect().x + 1280 - 40, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                game->render(game->getRenderer(), texture[NEXT_BACKGROUND], next_background_texture.get_sourceRect(), next_background_texture.get_destinationRect());
+                cout << "\t next_background_texture.get_destinationRect().x: " << next_background_texture.get_destinationRect().x << endl;
+
+                if (next_background_texture.get_destinationRect().x == 0)
+                {
+                    SDL_RenderClear(game->getRenderer());
+                    
+                    background_texture.set_destinationRect(0, background_texture.get_destinationRect().y, background_texture.get_destinationRect().w, background_texture.get_destinationRect().h);
+                    game->render(game->getRenderer(), texture[BACKGROUND], background_texture.get_sourceRect(), background_texture.get_destinationRect());
+                }
+                    
+                game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
+                
                 break;
             }
         default:
