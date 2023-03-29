@@ -82,3 +82,26 @@ bool Game::running()
 {
     return isRunning;
 }
+
+void Game::render(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect sourceRect, SDL_Rect destinationRect)
+{
+    //SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, &destinationRect);
+    SDL_RenderPresent(renderer);
+}
+
+void Game::loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path)
+{
+    texture = NULL;
+    texture = IMG_LoadTexture(renderer, path);
+    if (texture == NULL)
+        cout << "Fail to load texture: " << SDL_GetError() << '\n';
+}
+
+void Game::Texture_loader(SDL_Texture *texture[], int n)
+{
+    enum texture_type {BACKGROUND_SKY, BACKGROUND_PLAINS, CHARACTER};
+    loadTexture(texture[BACKGROUND_SKY], getRenderer(), "Image/Background/Sky.png");
+    loadTexture(texture[BACKGROUND_PLAINS], getRenderer(), "Image/Background/plains_ground.png");
+    loadTexture(texture[CHARACTER], getRenderer(), "Image/Character/Character.png");
+}

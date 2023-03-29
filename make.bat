@@ -1,1 +1,1 @@
-g++ TextureLoader.cpp Game.cpp main.cpp -o  game -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+g++ Texture_box.cpp Game.cpp main.cpp -o  game -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
