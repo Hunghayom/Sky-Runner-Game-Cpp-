@@ -40,6 +40,7 @@ public:
 
     void loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path);
     void Texture_loader(SDL_Texture *texture[], int n);
+    void Moving_background(SDL_Texture *background, SDL_Rect sourceRect, SDL_Rect destinationRect, SDL_Renderer *renderer, int speed);
 
     SDL_Window* getWindow();
     SDL_Renderer* getRenderer();    

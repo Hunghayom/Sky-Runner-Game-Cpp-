@@ -10,5 +10,11 @@ class Platform
         Texture_box platform_hitbox;
         SDL_Texture *platform_texture;
 
+    public:
+        Platform();
+        Platform(Texture_box platform_hitbox, SDL_Texture *platform_texture);
+        ~Platform();
+        
+
 };
 #endif /* Platform_hpp */
