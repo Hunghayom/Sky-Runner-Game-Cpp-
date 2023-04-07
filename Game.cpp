@@ -1,8 +1,5 @@
 #include "Game.hpp"
 
-//--------------------------------------------------
-//SDL_Rect sourceRect, destinationRect;
-//--------------------------------------------------
 
 Game::Game()
 {
@@ -85,9 +82,7 @@ bool Game::running()
 
 void Game::render(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect sourceRect, SDL_Rect destinationRect)
 {
-    //SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, &destinationRect);
-    SDL_RenderPresent(renderer);
+    SDL_RenderCopy(renderer, texture, &sourceRect, &destinationRect);
 }
 
 void Game::loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path)
@@ -100,8 +95,11 @@ void Game::loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char
 
 void Game::Texture_loader(SDL_Texture *texture[], int n)
 {
-    enum texture_type {BACKGROUND_SKY, BACKGROUND_PLAINS, CHARACTER};
+    enum texture_type {BACKGROUND_SKY, BACKGROUND_MOUNTAIN,BACKGROUND_PLAINS, CHARACTER};
     loadTexture(texture[BACKGROUND_SKY], getRenderer(), "Image/Background/Sky.png");
+    loadTexture(texture[BACKGROUND_MOUNTAIN], getRenderer(), "Image/Background/mountain.png");
     loadTexture(texture[BACKGROUND_PLAINS], getRenderer(), "Image/Background/plains_ground.png");
     loadTexture(texture[CHARACTER], getRenderer(), "Image/Character/Character.png");
 }
+
+

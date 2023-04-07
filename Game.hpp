@@ -6,6 +6,8 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 
+#include "Texture_box.hpp"
+
 using namespace std;
 
 class Game
@@ -20,18 +22,14 @@ private:
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
 
-    // Current displayed image
-    SDL_Surface *image = NULL;
-
-    //The surface contained by the window
-    SDL_Surface* gScreenSurface = NULL;
-
-
 public:
     Game();
     ~Game();
 
     void setRunning(bool running);
+    SDL_Window* getWindow();
+    SDL_Renderer* getRenderer();  
+    bool running();
 
     void init(const char *tilte, int xpos, int ypost, int width, int height, bool fullscreen);
 
@@ -40,17 +38,17 @@ public:
 
     void loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path);
     void Texture_loader(SDL_Texture *texture[], int n);
-    void Moving_background(SDL_Texture *background, SDL_Rect sourceRect, SDL_Rect destinationRect, SDL_Renderer *renderer, int speed);
+    void Moving_background(SDL_Texture *background, Texture_box &background_box, Texture_box &next_background_box, SDL_Renderer *renderer, int speed);
 
-    SDL_Window* getWindow();
-    SDL_Renderer* getRenderer();    
+      
 
     void handleEvent();
 
     void update();
     void clean();
 
-    bool running();
+    
+
 };
 
 #endif /* Game_hpp */
