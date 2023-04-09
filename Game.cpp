@@ -1,5 +1,5 @@
 #include "Game.hpp"
-
+#include "Tilemap.hpp"
 
 Game::Game()
 {
@@ -48,8 +48,6 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     }
 }
 
-
-
 SDL_Window *Game::getWindow()
 {
     return window;
@@ -60,7 +58,7 @@ SDL_Renderer *Game::getRenderer()
 }
 
 void Game::handleEvent()
-{  
+{
 }
 
 void Game::update()
@@ -95,11 +93,43 @@ void Game::loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char
 
 void Game::Texture_loader(SDL_Texture *texture[], int n)
 {
-    enum texture_type {BACKGROUND_SKY, BACKGROUND_MOUNTAIN,BACKGROUND_PLAINS, CHARACTER};
+    enum texture_type
+    {
+        BACKGROUND_SKY,
+        BACKGROUND_MOUNTAIN,
+        BACKGROUND_PLAINS,
+        CHARACTER
+    };
     loadTexture(texture[BACKGROUND_SKY], getRenderer(), "Image/Background/Sky.png");
     loadTexture(texture[BACKGROUND_MOUNTAIN], getRenderer(), "Image/Background/mountain.png");
     loadTexture(texture[BACKGROUND_PLAINS], getRenderer(), "Image/Background/plains_ground.png");
     loadTexture(texture[CHARACTER], getRenderer(), "Image/Character/Character.png");
 }
 
+void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Texture *pTexture, int tilemap_pos_x)
+{
+    //cout << "Drawing tilemap " << tilemap.get_tilemap_index() << "\n";
+    for (int i = 0; i < 18; i++)
+    {
+        for (int j = 0; j < 32; j++)
+        {
+            switch (tilemap.get_tilemap(i, j))
+            {
+            case 1:
+                tilemap_texture.set_destinationRect(tilemap_pos_x + j * 40, i * 40, 40, 40);
+                tilemap_texture.set_sourceRect(0, 0, 40, 40);
+                render(getRenderer(), pTexture, tilemap_texture.get_sourceRect(), tilemap_texture.get_destinationRect());
+                break;
 
+            case 2:
+                tilemap_texture.set_destinationRect(tilemap_pos_x + j * 40, i * 40, 40, 40);
+                tilemap_texture.set_sourceRect(40, 0, 40, 40);
+                render(getRenderer(), pTexture, tilemap_texture.get_sourceRect(), tilemap_texture.get_destinationRect());
+                break;
+
+            default:
+                break;
+            }
+        }
+    }
+}

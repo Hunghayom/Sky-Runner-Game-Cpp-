@@ -7,7 +7,6 @@ const int SCREEN_HEIGHT = 720;
 
 Game *game = nullptr;
 
-
 int main(int argc, char *args[])
 {
     int const FPS = 60;
@@ -39,7 +38,7 @@ int main(int argc, char *args[])
         BACKGROUND_MOUNTAIN,
         BACKGROUND_PLAINS,
         CHARACTER,
-        //thu_nghiem
+
     };
     game->Texture_loader(texture, 3);
 
@@ -49,9 +48,18 @@ int main(int argc, char *args[])
 
     game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
 
-//game->render(game->getRenderer(), texture[thu_nghiem],thu_nghiem.get_sourceRect(), thu_nghiem.get_destinationRect());
+    Texture_box tilemap_texture(0, 0, 40, 40, 0, 0, 40, 40);
+    SDL_Texture *pT;
+    game->loadTexture(pT, game->getRenderer(), "Image/Background/test.png");
 
-    const int speed = 5;
+    int present_tilemap_pos_x = 0;
+    int next_tilemap_pos_x = 1280;
+
+    game->drawing_tilemap(Default_tilemap, tilemap_texture, pT, present_tilemap_pos_x);
+
+    SDL_RenderPresent(game->getRenderer());
+
+    const int speed = 40;
 
     while (game->running())
     {
@@ -72,22 +80,22 @@ int main(int argc, char *args[])
                 break;
             case SDLK_UP:
                 break;
-            case SDLK_DOWN:
-                break;
-            case SDLK_LEFT:
-                cout << "left \n";
-                break;
             case SDLK_RIGHT:
-                cout << "right \n";
-                game->Moving_background(texture[BACKGROUND_MOUNTAIN], mountain, next_mountain, game->getRenderer(), 30);
-                game->Moving_background(texture[BACKGROUND_PLAINS], plains, next_plains, game->getRenderer(), 40);
+                game->Moving_background(texture[BACKGROUND_MOUNTAIN], mountain, next_mountain, game->getRenderer(), speed / 4);
+                game->Moving_background(texture[BACKGROUND_PLAINS], plains, next_plains, game->getRenderer(), speed);
+
+                present_tilemap_pos_x -= speed;
+                next_tilemap_pos_x -= speed;
+                cout << "present_tilemap_pos_x: " << present_tilemap_pos_x << endl;
+                cout << "next_tilemap_pos_x: " << next_tilemap_pos_x << endl;
                 break;
             }
         default:
+
             break;
         }
 
-        game->update();
+        //Background render
 
         game->render(game->getRenderer(), texture[BACKGROUND_SKY], sky.get_sourceRect(), sky.get_destinationRect());
 
@@ -99,6 +107,10 @@ int main(int argc, char *args[])
 
         game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
 
+        //Tilemap render
+
+        game->drawing_tilemap(Default_tilemap, tilemap_texture, pT, present_tilemap_pos_x);
+        
         SDL_RenderPresent(game->getRenderer());
 
         frameTime = SDL_GetTicks64() - frameStart;
