@@ -155,13 +155,13 @@ void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Tex
 }
 int Game::random_tilemap(int n, int score)
 {
-    srand(time(0));
+    srand(time(0) + score);
     int tilemap_index = rand() % n;
-    if (tilemap_index !=0) 
-        {
-            return tilemap_index;
-        }
-    else return 1;
+    while (tilemap_index == 0)
+    {
+        tilemap_index = rand() % n;
+    }
+    return tilemap_index;
 }
 
 void Game::infinite_tilemap(Tilemap tilemap[], int n, Texture_box tilemap_texture, SDL_Texture *pTexture, int index_1, int index_2, int present_tilemap_pos_x, int next_tilemap_pos_x, int speed)
