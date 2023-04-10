@@ -64,16 +64,11 @@ int main(int argc, char *args[])
     SDL_RenderPresent(game->getRenderer());
 
     const int speed = 40;
-    bool start = true;
+    bool is_first_tilemap = true;
+    int present_tilemap_index = 0;
+    int next_tilemap_index = game->random_tilemap(6, game->getScore());
     game->start();
     
-
-    for (int i = 0; i < 50; i++)
-        {
-            cout << game->random_tilemap(6, game->getScore()) << " ";
-        }
-
-
 
     while (game->running())
     {
@@ -123,31 +118,33 @@ int main(int argc, char *args[])
         game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
 
         //Tilemap render
-        int present_tilemap_index = 0;
-        int next_tilemap_index = 0;
-        if (start == true)
+        
+        if (is_first_tilemap)
         {
-            game->infinite_tilemap(array_of_tilemap, 6, tilemap_texture, pT, 0, 1, present_tilemap_pos_x, next_tilemap_pos_x, speed);
+            game->infinite_tilemap(array_of_tilemap, 6, tilemap_texture, pT, 0, next_tilemap_index, present_tilemap_pos_x, next_tilemap_pos_x, speed);
             if (present_tilemap_pos_x == -1280)
             {
-                start = false;
+                is_first_tilemap = false;
             }
         }
         
         
-        if (next_tilemap_pos_x == 0&& start == false)
+        if (present_tilemap_pos_x == -1280 && is_first_tilemap == false)
         {
             //present_tilemap_index = game->random_tilemap(6, game->getScore());
-            present_tilemap_index = next_tilemap_index;
+            swap (present_tilemap_index , next_tilemap_index);
             next_tilemap_index = game->random_tilemap(6, game->getScore());
+            
             present_tilemap_pos_x = 0;
             next_tilemap_pos_x = 1280;
+
             cout << "present_tilemap_index: " << present_tilemap_index << endl;
             cout << "next_tilemap_index: " << next_tilemap_index << endl;
-            //game->infinite_tilemap(array_of_tilemap, 6, tilemap_texture, pT, present_tilemap_index, next_tilemap_index, present_tilemap_pos_x, next_tilemap_pos_x, speed);
+            
+            
+        }
             game->drawing_tilemap(array_of_tilemap[present_tilemap_index], tilemap_texture, pT, present_tilemap_pos_x); 
             game->drawing_tilemap(array_of_tilemap[next_tilemap_index], tilemap_texture, pT, next_tilemap_pos_x);
-        }
         SDL_RenderPresent(game->getRenderer());
 
         
