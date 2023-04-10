@@ -9,6 +9,7 @@ Game *game = nullptr;
 
 int main(int argc, char *args[])
 {
+    
     int const FPS = 60;
     int const frameDelay = 1000 / FPS;
 
@@ -29,8 +30,9 @@ int main(int argc, char *args[])
 
     game = new Game();
 
+    
     game->init("SDL Tutorial", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
-
+    
     SDL_Texture *texture[5];
     enum texture_type
     {
@@ -55,11 +57,23 @@ int main(int argc, char *args[])
     int present_tilemap_pos_x = 0;
     int next_tilemap_pos_x = 1280;
 
-    game->drawing_tilemap(Default_tilemap, tilemap_texture, pT, present_tilemap_pos_x);
+    Tilemap array_of_tilemap[6] = {Default_tilemap, Tilemap_1, Tilemap_2, Tilemap_3, Tilemap_4, Tilemap_5};
 
+    game->drawing_tilemap(Default_tilemap, tilemap_texture, pT, present_tilemap_pos_x);
+    game->drawing_tilemap(array_of_tilemap[1], tilemap_texture, pT, next_tilemap_pos_x);
     SDL_RenderPresent(game->getRenderer());
 
     const int speed = 40;
+    bool start = true;
+    game->start();
+    
+
+    for (int i = 0; i < 50; i++)
+        {
+            cout << game->random_tilemap(6, game->getScore()) << " ";
+        }
+
+
 
     while (game->running())
     {
@@ -86,14 +100,15 @@ int main(int argc, char *args[])
 
                 present_tilemap_pos_x -= speed;
                 next_tilemap_pos_x -= speed;
-                cout << "present_tilemap_pos_x: " << present_tilemap_pos_x << endl;
-                cout << "next_tilemap_pos_x: " << next_tilemap_pos_x << endl;
+                //cout << "present_tilemap_pos_x: " << present_tilemap_pos_x << endl;
+                //cout << "next_tilemap_pos_x: " << next_tilemap_pos_x << endl;
                 break;
             }
         default:
 
             break;
         }
+        
 
         //Background render
 
@@ -108,10 +123,35 @@ int main(int argc, char *args[])
         game->render(game->getRenderer(), texture[CHARACTER], player_texture.get_sourceRect(), player_texture.get_destinationRect());
 
         //Tilemap render
-
-        game->drawing_tilemap(Default_tilemap, tilemap_texture, pT, present_tilemap_pos_x);
+        int present_tilemap_index = 0;
+        int next_tilemap_index = 0;
+        if (start == true)
+        {
+            game->infinite_tilemap(array_of_tilemap, 6, tilemap_texture, pT, 0, 1, present_tilemap_pos_x, next_tilemap_pos_x, speed);
+            if (present_tilemap_pos_x == -1280)
+            {
+                start = false;
+            }
+        }
         
+        
+        if (next_tilemap_pos_x == 0&& start == false)
+        {
+            //present_tilemap_index = game->random_tilemap(6, game->getScore());
+            present_tilemap_index = next_tilemap_index;
+            next_tilemap_index = game->random_tilemap(6, game->getScore());
+            present_tilemap_pos_x = 0;
+            next_tilemap_pos_x = 1280;
+            cout << "present_tilemap_index: " << present_tilemap_index << endl;
+            cout << "next_tilemap_index: " << next_tilemap_index << endl;
+            //game->infinite_tilemap(array_of_tilemap, 6, tilemap_texture, pT, present_tilemap_index, next_tilemap_index, present_tilemap_pos_x, next_tilemap_pos_x, speed);
+            game->drawing_tilemap(array_of_tilemap[present_tilemap_index], tilemap_texture, pT, present_tilemap_pos_x); 
+            game->drawing_tilemap(array_of_tilemap[next_tilemap_index], tilemap_texture, pT, next_tilemap_pos_x);
+        }
         SDL_RenderPresent(game->getRenderer());
+
+        
+
 
         frameTime = SDL_GetTicks64() - frameStart;
 
@@ -119,6 +159,7 @@ int main(int argc, char *args[])
         {
             SDL_Delay(frameDelay - frameTime);
         }
+        //cout << game->calculate_score() << endl;
     }
 
     game->clean();

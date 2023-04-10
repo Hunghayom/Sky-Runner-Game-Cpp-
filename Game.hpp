@@ -5,6 +5,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "Texture_box.hpp"
 #include "Tilemap.hpp"
@@ -14,7 +16,8 @@ using namespace std;
 class Game
 {
 private:
-    int cnt = 0;
+    int score = 0;
+    clock_t start_time;
 
     bool isRunning;
 
@@ -27,9 +30,14 @@ public:
     ~Game();
 
     void setRunning(bool running);
+    int getScore();
+    void setScore(int score);
     SDL_Window *getWindow();
     SDL_Renderer *getRenderer();
     bool running();
+
+    void start();
+    int calculate_score();
 
     void init(const char *tilte, int xpos, int ypost, int width, int height, bool fullscreen);
 
@@ -40,10 +48,11 @@ public:
     void Moving_background(SDL_Texture *background, Texture_box &background_box, Texture_box &next_background_box, SDL_Renderer *renderer, int speed);
 
     void drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Texture *pTexture, int tilemap_pos_x);
+    void infinite_tilemap(Tilemap tilemap[], int n, Texture_box tilemap_texture, SDL_Texture *pTexture, int index_1, int index_2, int present_tilemap_pos_x, int next_tilemap_pos_x, int speed);
+    int random_tilemap(int n, int score);
 
     void handleEvent();
 
-    void update();
     void clean();
 };
 

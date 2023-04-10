@@ -61,10 +61,30 @@ void Game::handleEvent()
 {
 }
 
-void Game::update()
+void Game::setScore(int score)
 {
+    this->score = score;
+}
+int Game::getScore()
+{
+    return score;
 }
 
+void Game::start()
+{
+    start_time = clock();
+}
+int Game::calculate_score()
+{
+    clock_t current_time = clock();
+    double time_diff = (double)(current_time - start_time) / CLOCKS_PER_SEC;
+    int score_diff = (int)(time_diff / 0.2) - score;
+    if (score_diff > 0)
+    {
+        score += score_diff;
+    }
+    return score;
+}
 void Game::clean()
 {
     SDL_DestroyWindow(window);
@@ -108,7 +128,7 @@ void Game::Texture_loader(SDL_Texture *texture[], int n)
 
 void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Texture *pTexture, int tilemap_pos_x)
 {
-    //cout << "Drawing tilemap " << tilemap.get_tilemap_index() << "\n";
+    // cout << "Drawing tilemap " << tilemap.get_tilemap_index() << "\n";
     for (int i = 0; i < 18; i++)
     {
         for (int j = 0; j < 32; j++)
@@ -132,4 +152,16 @@ void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Tex
             }
         }
     }
+}
+int Game::random_tilemap(int n, int score)
+{
+    srand(time(0));
+    int tilemap_index = rand() % n;
+    return tilemap_index;
+}
+
+void Game::infinite_tilemap(Tilemap tilemap[], int n, Texture_box tilemap_texture, SDL_Texture *pTexture, int index_1, int index_2, int present_tilemap_pos_x, int next_tilemap_pos_x, int speed)
+{
+    drawing_tilemap(tilemap[index_1], tilemap_texture, pTexture, present_tilemap_pos_x); 
+    drawing_tilemap(tilemap[index_2], tilemap_texture, pTexture, next_tilemap_pos_x);
 }
