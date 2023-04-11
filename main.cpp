@@ -13,7 +13,7 @@ int main(int argc, char *args[])
     int const FPS = 60;
     int const frameDelay = 1000 / FPS;
 
-    Texture_box player_texture(0, 0, 35, 42, 640, 600, 35, 42);
+    Texture_box player_texture(0, 0, 35, 42, 600, 0, 35, 42);
 
     Texture_box sky(0, 0, 1280, 720, 0, 0, 1280, 720);
 
@@ -88,8 +88,9 @@ int main(int argc, char *args[])
             case SDLK_UP:
                 break;
             case SDLK_RIGHT:
+
                 game->Moving_background(texture[BACKGROUND_MOUNTAIN], mountain, next_mountain, game->getRenderer(), speed / 4);
-                game->Moving_background(texture[BACKGROUND_PLAINS], plains, next_plains, game->getRenderer(), speed);
+                game->Moving_background(texture[BACKGROUND_PLAINS], plains, next_plains, game->getRenderer(), speed / 1.25);
 
                 present_tilemap_pos_x -= speed;
                 next_tilemap_pos_x -= speed;
@@ -127,7 +128,6 @@ int main(int argc, char *args[])
             }
             else
             {
-                // present_tilemap_index = game->random_tilemap(6, game->getScore());
                 swap(present_tilemap_index, next_tilemap_index);
                 next_tilemap_index = game->random_tilemap(18, game->getScore());
 
@@ -135,7 +135,6 @@ int main(int argc, char *args[])
                 next_tilemap_pos_x = 1280;
 
                 cout << "present_tilemap_index: " << present_tilemap_index << endl;
-                //cout << "next_tilemap_index: " << next_tilemap_index << endl;
             }
         }
         game->drawing_tilemap(array_of_tilemap[present_tilemap_index], tilemap_texture, pT, present_tilemap_pos_x);
@@ -148,7 +147,6 @@ int main(int argc, char *args[])
         {
             SDL_Delay(frameDelay - frameTime);
         }
-        
     }
 
     game->clean();

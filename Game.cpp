@@ -128,7 +128,6 @@ void Game::Texture_loader(SDL_Texture *texture[], int n)
 
 void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Texture *pTexture, int tilemap_pos_x)
 {
-    // cout << "Drawing tilemap " << tilemap.get_tilemap_index() << "\n";
     for (int i = 0; i < 18; i++)
     {
         for (int j = 0; j < 32; j++)
@@ -138,6 +137,7 @@ void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Tex
             case 1:
                 tilemap_texture.set_destinationRect(tilemap_pos_x + j * 40, i * 40, 40, 40);
                 tilemap_texture.set_sourceRect(0, 0, 40, 40);
+                
                 render(getRenderer(), pTexture, tilemap_texture.get_sourceRect(), tilemap_texture.get_destinationRect());
                 break;
 
