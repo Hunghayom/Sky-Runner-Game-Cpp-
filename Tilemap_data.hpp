@@ -53,7 +53,7 @@ int tile_map_default[MAP_HEIGHT][MAP_WIDTH] = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
-SDL_Rect def_platform_0 = {200, 400, 960, 16};
+SDL_Rect def_platform_0 = {240, 400, 960, 80};
 SDL_Rect array_of_platforms_0[1] = {def_platform_0};
 Tilemap Default_tilemap(0, tile_map_default, 1, array_of_platforms_0);
 

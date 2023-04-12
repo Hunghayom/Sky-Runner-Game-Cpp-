@@ -31,6 +31,12 @@ public:
     void set_number_of_platform(int number_of_platform);
 
     void set_platform_rects(std::vector <SDL_Rect> platform_rects);
+    std::vector <SDL_Rect> get_platform_rects()
+    {
+        return platform_rects;
+    }
+    vector <SDL_Rect> update_platform_rects(Tilemap tilemap, int tilemap_pos_x);
+
     
     SDL_Rect get_platform_rects(int number_of_platform);
 

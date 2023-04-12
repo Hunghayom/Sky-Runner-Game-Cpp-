@@ -44,12 +44,13 @@ public:
     void render(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Rect sourceRect, SDL_Rect destinationRect);
 
     void loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char *path);
-    void Texture_loader(SDL_Texture *texture[], int n);
+    
     void Moving_background(SDL_Texture *background, Texture_box &background_box, Texture_box &next_background_box, SDL_Renderer *renderer, int speed);
 
     void drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Texture *pTexture, int tilemap_pos_x);
     void infinite_tilemap(Tilemap tilemap[], int n, Texture_box tilemap_texture, SDL_Texture *pTexture, int index_1, int index_2, int present_tilemap_pos_x, int next_tilemap_pos_x, int speed);
     int random_tilemap(int n, int score);
+
 
     void handleEvent();
 

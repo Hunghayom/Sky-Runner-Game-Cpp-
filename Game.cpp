@@ -111,20 +111,6 @@ void Game::loadTexture(SDL_Texture *&texture, SDL_Renderer *renderer, const char
         cout << "Fail to load texture: " << SDL_GetError() << '\n';
 }
 
-void Game::Texture_loader(SDL_Texture *texture[], int n)
-{
-    enum texture_type
-    {
-        BACKGROUND_SKY,
-        BACKGROUND_MOUNTAIN,
-        BACKGROUND_PLAINS,
-        CHARACTER
-    };
-    loadTexture(texture[BACKGROUND_SKY], getRenderer(), "Image/Background/Sky.png");
-    loadTexture(texture[BACKGROUND_MOUNTAIN], getRenderer(), "Image/Background/mountain.png");
-    loadTexture(texture[BACKGROUND_PLAINS], getRenderer(), "Image/Background/plains_ground.png");
-    loadTexture(texture[CHARACTER], getRenderer(), "Image/Character/Character.png");
-}
 
 void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Texture *pTexture, int tilemap_pos_x)
 {
@@ -153,6 +139,7 @@ void Game::drawing_tilemap(Tilemap tilemap, Texture_box tilemap_texture, SDL_Tex
         }
     }
 }
+
 int Game::random_tilemap(int n, int score)
 {
     srand(time(0) + score);
@@ -169,3 +156,5 @@ void Game::infinite_tilemap(Tilemap tilemap[], int n, Texture_box tilemap_textur
     drawing_tilemap(tilemap[index_1], tilemap_texture, pTexture, present_tilemap_pos_x); 
     drawing_tilemap(tilemap[index_2], tilemap_texture, pTexture, next_tilemap_pos_x);
 }
+
+//void Game::infinite_tilemap_rects()
