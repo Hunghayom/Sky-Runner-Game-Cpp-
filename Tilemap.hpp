@@ -35,7 +35,7 @@ public:
     {
         return platform_rects;
     }
-    vector <SDL_Rect> update_platform_rects(Tilemap tilemap, int tilemap_pos_x);
+    vector <SDL_Rect> update_platform_rects(Tilemap& tilemap, int tilemap_pos_x);
 
     
     SDL_Rect get_platform_rects(int number_of_platform);

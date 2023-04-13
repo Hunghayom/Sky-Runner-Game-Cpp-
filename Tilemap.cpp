@@ -86,12 +86,17 @@ SDL_Rect Tilemap::get_platform_rects(int number_of_platform)
 {
     return platform_rects[number_of_platform];
 }
-vector <SDL_Rect> Tilemap::update_platform_rects(Tilemap tilemap, int tilemap_pos_x)
+
+vector <SDL_Rect> Tilemap::update_platform_rects(Tilemap& tilemap, int tilemap_pos_x)
 {
     for (int i = 0; i < platform_rects.size(); i++)
     {
-        
         platform_rects[i].w += tilemap_pos_x;
+        
+        if (platform_rects[i].x + platform_rects[i].w < 320)
+        {
+            platform_rects.erase(platform_rects.begin());
+        }
     }
     return platform_rects;
 }

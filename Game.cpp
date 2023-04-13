@@ -157,4 +157,21 @@ void Game::infinite_tilemap(Tilemap tilemap[], int n, Texture_box tilemap_textur
     drawing_tilemap(tilemap[index_2], tilemap_texture, pTexture, next_tilemap_pos_x);
 }
 
+void Game::death_message(Player& player)
+{
+    if (player.get_y() > 760 || player.get_y() < -20)
+        {
+            if (player.get_y() < -20)
+            {
+                cout << "You're flying out of the sky! Your score: " << getScore() << endl;
+                setRunning(false);
+            }
+            else
+            {
+                cout << "You're falling to the the ground! Your score: " << getScore() << endl;
+                setRunning(false);
+            }
+        }
+}
+
 //void Game::infinite_tilemap_rects()

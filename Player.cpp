@@ -203,3 +203,4 @@ bool Player::is_player_reach_max_heigh(Player& player, vector<SDL_Rect>& platfor
     }
     return false;
 }
+

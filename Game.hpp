@@ -10,6 +10,7 @@
 
 #include "Texture_box.hpp"
 #include "Tilemap.hpp"
+#include "Player.hpp"
 
 using namespace std;
 
@@ -54,7 +55,9 @@ public:
 
     void handleEvent();
 
+    void death_message(Player& player);
     void clean();
+
 };
 
 #endif /* Game_hpp */

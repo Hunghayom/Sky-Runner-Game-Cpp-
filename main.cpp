@@ -62,7 +62,17 @@ int main(int argc, char *args[])
     bool is_first_tilemap = true;
     int present_tilemap_index = 0;
     int next_tilemap_index = game->random_tilemap(18, game->getScore());
+
+    vector<SDL_Rect> present_platform_rects = platform_rects[0];
+    vector<SDL_Rect> next_platform_rects = platform_rects[next_tilemap_index];
+
+    Tilemap present_tilemap = array_of_tilemap[present_tilemap_index];
+    Tilemap next_tilemap = array_of_tilemap[next_tilemap_index];
     game->start();
+
+    present_platform_rects = array_of_tilemap[present_tilemap_index].update_platform_rects(present_tilemap, 0);
+
+    next_platform_rects = next_tilemap.update_platform_rects(next_tilemap, 1280);
 
     while (game->running())
     {
@@ -84,7 +94,7 @@ int main(int argc, char *args[])
             case SDLK_UP:
                 player->set_jumping(true);
                 player->player_jumping(*player);
-                // player->is_player_reach_max_heigh(*player, platform_rects[0]);
+                player->is_player_reach_max_heigh(*player, present_platform_rects);
                 break;
 
             case SDLK_RIGHT:
@@ -92,23 +102,24 @@ int main(int argc, char *args[])
                 break;
             }
         default:
-            player->set_falling(player->is_falling(*player, platform_rects[0]));
+            present_platform_rects = array_of_tilemap[present_tilemap_index].update_platform_rects(present_tilemap, -speed);
 
+            next_platform_rects = next_tilemap.update_platform_rects(next_tilemap, -speed);
+
+            player->set_falling(player->is_falling(*player, present_platform_rects));
+            
             player->player_falling(*player);
-            platform_rects[0] = Default_tilemap.update_platform_rects(Default_tilemap, -speed);
-            // cout << "falling: " << player->get_falling() << endl;
-            cout << "player_box: " << player->get_x() << " " << player->get_y() << " " << player->get_width() << " " << player->get_height() << endl;
-            cout << "jumping: " << player->get_jumping() << endl;
-            cout << "max_height: " << player->get_max_height() << endl;
-
             player->player_jumping(*player);
-            player->is_player_reach_max_heigh(*player, platform_rects[0]);
+                player->is_player_reach_max_heigh(*player, present_platform_rects);
+            cout << "falling: " << player->get_falling() << endl;
 
-            for (int i = 0; i < platform_rects[0].size(); i++)
+            // cout << "player_box: " << player->get_x() << " " << player->get_y() << " " << player->get_width() << " " << player->get_height() << endl;
+
+            for (int i = 0; i < present_platform_rects.size(); i++)
             {
-                // cout << "platform_rect: " << platform_rects[0][i].x << " " << platform_rects[0][i].y << " " << platform_rects[0][i].w << " " << platform_rects[0][i].h << endl;
+                cout << "platform[" << i << "]_rect: " << present_platform_rects[i].x << " " << present_platform_rects[i].y << " " << platform_rects[0][i].w << " " << present_platform_rects[i].h << endl;
             }
-
+            cout << "--------------------" << endl;
             player_texture.set_destinationRect(player->get_x(), player->get_y(), player->get_width(), player->get_height());
 
             game->Moving_background(texture[BACKGROUND_MOUNTAIN], mountain, next_mountain, game->getRenderer(), speed / 2);
@@ -138,6 +149,7 @@ int main(int argc, char *args[])
             if (is_first_tilemap)
             {
                 game->infinite_tilemap(array_of_tilemap, 18, tilemap_texture, pT, 0, next_tilemap_index, present_tilemap_pos_x, next_tilemap_pos_x, speed);
+                present_platform_rects = platform_rects[present_tilemap_index];
                 if (present_tilemap_pos_x == -1280)
                 {
                     is_first_tilemap = false;
@@ -147,6 +159,8 @@ int main(int argc, char *args[])
             {
                 swap(present_tilemap_index, next_tilemap_index);
                 next_tilemap_index = game->random_tilemap(18, game->getScore());
+
+                present_platform_rects = platform_rects[present_tilemap_index];
 
                 present_tilemap_pos_x = 0;
                 next_tilemap_pos_x = 1280;
@@ -165,19 +179,7 @@ int main(int argc, char *args[])
             SDL_Delay(frameDelay - frameTime);
         }
 
-        if (player->get_y() > 760 || player->get_y() < -20)
-        {
-            if (player->get_y() > 760)
-            {
-                cout << "You're flying out of the sky! Your score: " << game->getScore() << endl;
-                game->setRunning(false);
-            }
-            else
-            {
-                cout << "You're falling out of the ground! Your score: " << game->getScore() << endl;
-                game->setRunning(false);
-            }
-        }
+        game->death_message(*player);
     }
 
     game->clean();
