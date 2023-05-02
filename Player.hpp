@@ -45,12 +45,14 @@ public:
     void set_falling(bool falling);
     void set_max_height(double max_height);
 
-    void update_player(Player& player, vector<SDL_Rect>& platforms);
+    
 
     void player_falling(Player& player);
     void player_jumping(Player& player);
 
-    bool is_falling(Player& player, vector<SDL_Rect>& platforms);
+    bool fall(Player& player, vector<SDL_Rect>& platforms);
+    bool is_falling(Player& player, vector<SDL_Rect>& present_platforms, vector<SDL_Rect>& next_platforms);
+
     bool is_player_reach_max_heigh(Player& player, vector<SDL_Rect>& platforms);
 };
 #endif /* "Player_hpp" */

@@ -126,34 +126,7 @@ void Player::set_max_height(double max_height)
 {
     this->max_height = max_height;
 }
-void Player::update_player(Player& player, vector<SDL_Rect>& platforms)
-{
-    // update player's position
-    player.set_y(player.get_y() + player.get_speed());
-    player.set_speed(player.get_speed() + player.get_gravity());
 
-    // check if player is on the ground
-    if (player.get_y() + player.get_height() >= 720)
-    {
-        player.set_y(720 - player.get_height());
-        player.set_speed(0);
-        player.set_jumping(false);
-    }
-
-    // check if player is on a platform
-    for (int i = 0; i < platforms.size(); i++)
-    {
-        if (player.get_x() + player.get_width() > platforms[i].x && player.get_x() < platforms[i].x + platforms[i].w)
-        {
-            if (player.get_y() + player.get_height() >= platforms[i].y && player.get_y() + player.get_height() <= platforms[i].y + platforms[i].h)
-            {
-                player.set_y(platforms[i].y - player.get_height());
-                player.set_speed(0);
-                player.set_jumping(false);
-            }
-        }
-    }
-} 
 
 void Player::player_falling(Player& player)
 {
@@ -163,30 +136,40 @@ void Player::player_falling(Player& player)
     }
 }
 
-bool Player::is_falling(Player& player, vector<SDL_Rect>& platforms)
+bool Player::fall(Player& player, vector<SDL_Rect>& platforms)
 {
     for (int i = 0; i < platforms.size(); i++)
     {
         if (player.get_x() + player.get_width() > platforms[i].x && player.get_x() < platforms[i].x + platforms[i].w)
         {
-            if (player.get_y() + player.get_height() >= platforms[i].y && player.get_y() + player.get_height() <= platforms[i].y + platforms[i].h)
+            //if (player.get_y() + player.get_height() >= platforms[i].y && player.get_y() + player.get_height() <= platforms[i].y + platforms[i].h)
+            if (player.get_y() + player.get_height() == platforms[i].y)
             {
-                player.set_y(platforms[i].y - player.get_height());
-                player.set_speed(0);
-                player.set_jumping(false);
+                //player.set_y(platforms[i].y - player.get_height());
+                //player.set_speed(0);
+                //player.set_jumping(false);
                 return false;
             }
-            
         }
-        
     }
     return true;
+}
+
+bool Player::is_falling(Player& player, vector<SDL_Rect>& present_platforms, vector<SDL_Rect>& next_platforms)
+{
+    if((fall(player, present_platforms) == 1 || fall(player, next_platforms) ==1) && (fall(player, present_platforms) == 0 || fall(player, next_platforms) == 0))
+    {
+        //player.set_falling(false);
+        return false;
+    }
+    else return true;
 }
 
 void Player::player_jumping(Player& player)
 {
     if (player.get_jumping() == 1)
     {
+        player.set_falling(0);
         player.set_y(player.get_y() - 10);
         player.set_max_height(player.get_max_height() + 10);
     }

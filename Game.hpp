@@ -53,7 +53,7 @@ public:
     int random_tilemap(int n, int score);
 
 
-    void handleEvent();
+    
 
     void death_message(Player& player);
     void clean();

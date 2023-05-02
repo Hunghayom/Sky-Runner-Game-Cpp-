@@ -57,10 +57,6 @@ SDL_Renderer *Game::getRenderer()
     return renderer;
 }
 
-void Game::handleEvent()
-{
-}
-
 void Game::setScore(int score)
 {
     this->score = score;
@@ -173,5 +169,3 @@ void Game::death_message(Player& player)
             }
         }
 }
-
-//void Game::infinite_tilemap_rects()
