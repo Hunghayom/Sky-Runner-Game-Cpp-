@@ -21,6 +21,8 @@ private:
     clock_t start_time;
 
     bool isRunning;
+    bool isMenu = true;
+    bool isPlaying = false;
 
     // Window to render to
     SDL_Window *window = NULL;
@@ -30,12 +32,21 @@ public:
     Game();
     ~Game();
 
+    bool running();
     void setRunning(bool running);
+
+    bool menu();
+    void setMenu(bool isMenu);
+
+    bool playing();
+    void setPlaying(bool isPlaying);
+
     int getScore();
     void setScore(int score);
+
     SDL_Window *getWindow();
     SDL_Renderer *getRenderer();
-    bool running();
+    
 
     void start();
     int calculate_score();

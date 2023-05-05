@@ -46,6 +46,8 @@ int main(int argc, char *args[])
         BACKGROUND_PLAINS,
         BACKGROUND_CLOUD,
         CHARACTER,
+        MENU,
+        INSTRUCTION,
 
     };
     game->loadTexture(texture[BACKGROUND_SKY], game->getRenderer(), "Image/Background/Sky.png");
@@ -53,6 +55,8 @@ int main(int argc, char *args[])
     game->loadTexture(texture[BACKGROUND_PLAINS], game->getRenderer(), "Image/Background/plains_ground.png");
     game->loadTexture(texture[BACKGROUND_CLOUD], game->getRenderer(), "Image/Background/cloud.png");
     game->loadTexture(texture[CHARACTER], game->getRenderer(), "Image/Character/Character.png");
+    game->loadTexture(texture[MENU], game->getRenderer(), "Image/Menu/menu.png");
+    game->loadTexture(texture[INSTRUCTION], game->getRenderer(), "Image/Menu/instruction.png");
 
     Texture_box tilemap_texture(0, 0, 40, 40, 0, 0, 40, 40);
     SDL_Texture *pT;
@@ -82,6 +86,8 @@ int main(int argc, char *args[])
     next_platform_rects = next_tilemap.update_platform_rects(next_tilemap, next_tilemap_pos_x);
 
     int count = 0;
+    //Game-start log
+    {
     outfile << "Game start!\n";
     outfile << "---------------------------------------------" << endl;
     outfile << "Number of key event: " << count << endl;
@@ -99,11 +105,24 @@ int main(int argc, char *args[])
         outfile << "\tnext_platform[" << i << "]_rect: " << next_platform_rects[i].x << " " << next_platform_rects[i].y << " " << next_platform_rects[i].w << " " << next_platform_rects[i].h << endl;
     }
     outfile << "---------------------------------------------" << endl;
+    }
 
-    while (game->running())
+    game->render(game->getRenderer(), texture[BACKGROUND_SKY], sky.get_sourceRect(), sky.get_destinationRect());
+
+    game->render(game->getRenderer(), texture[BACKGROUND_CLOUD], cloud.get_sourceRect(), cloud.get_destinationRect());
+    game->render(game->getRenderer(), texture[BACKGROUND_CLOUD], next_cloud.get_sourceRect(), next_cloud.get_destinationRect());
+
+    game->render(game->getRenderer(), texture[BACKGROUND_MOUNTAIN], mountain.get_sourceRect(), mountain.get_destinationRect());
+    game->render(game->getRenderer(), texture[BACKGROUND_MOUNTAIN], next_mountain.get_sourceRect(), next_mountain.get_destinationRect());
+
+    game->render(game->getRenderer(), texture[BACKGROUND_PLAINS], next_plains.get_sourceRect(), next_plains.get_destinationRect());
+    game->render(game->getRenderer(), texture[BACKGROUND_PLAINS], plains.get_sourceRect(), plains.get_destinationRect());
+
+    game->render(game->getRenderer(), texture[MENU], main_menu_screen_box.get_sourceRect(), main_menu_screen_box.get_destinationRect());
+    SDL_RenderPresent(game->getRenderer());
+    
+    while (game->menu())
     {
-        frameStart = SDL_GetTicks64();
-
         SDL_Event event;
         SDL_PollEvent(&event);
         switch (event.type)
@@ -114,7 +133,33 @@ int main(int argc, char *args[])
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
+            case SDLK_KP_ENTER:
+                game->setPlaying(true);
+                game->setMenu(false);
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    while (game->playing())
+    {
+        frameStart = SDL_GetTicks64();
+
+        SDL_Event event;
+        SDL_PollEvent(&event);
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            game->setPlaying(false);
+            game->setRunning(false);
+            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
+            {
             case SDLK_ESCAPE:
+                game->setPlaying(false);
                 game->setRunning(false);
                 break;
             case SDLK_UP:
@@ -156,7 +201,7 @@ int main(int argc, char *args[])
                 }
                 outfile << "---------------------------------------------" << endl;
 
-                //game->Moving_background(texture[BACKGROUND_CLOUD], cloud, next_cloud, game->getRenderer(), speed / 3);
+                // game->Moving_background(texture[BACKGROUND_CLOUD], cloud, next_cloud, game->getRenderer(), speed / 3);
                 game->Moving_background(texture[BACKGROUND_MOUNTAIN], mountain, next_mountain, game->getRenderer(), speed / 2.1);
                 game->Moving_background(texture[BACKGROUND_PLAINS], plains, next_plains, game->getRenderer(), speed / 1.25);
 
@@ -191,7 +236,7 @@ int main(int argc, char *args[])
             if (is_first_tilemap)
             {
                 game->infinite_tilemap(array_of_tilemap, 18, tilemap_texture, pT, 0, next_tilemap_index, present_tilemap_pos_x, next_tilemap_pos_x, speed);
-                //present_platform_rects = platform_rects[present_tilemap_index];
+                // present_platform_rects = platform_rects[present_tilemap_index];
                 if (present_tilemap_pos_x == -1280)
                 {
                     is_first_tilemap = false;
@@ -201,26 +246,22 @@ int main(int argc, char *args[])
             {
                 present_tilemap_index = next_tilemap_index;
                 next_tilemap_index = game->random_tilemap(18, game->getScore());
-                
+
                 present_tilemap = array_of_tilemap[present_tilemap_index];
                 next_tilemap = array_of_tilemap[next_tilemap_index];
-                
+
                 present_platform_rects.clear();
                 next_platform_rects.clear();
-               
 
-                present_platform_rects = platform_rects[present_tilemap_index]; //dòng này đang bị lỗi: gán xong trả về giá trị w ảo
-                
+                present_platform_rects = platform_rects[present_tilemap_index]; // dòng này đang bị lỗi: gán xong trả về giá trị w ảo
+
                 outfile << "Present_tilemap_index_after_update: [" << present_tilemap_index << "]" << endl;
                 for (int i = 0; i < present_platform_rects.size(); i++)
                 {
                     outfile << "\tplatform[" << i << "]_rect: " << present_platform_rects[i].x << " " << present_platform_rects[i].y << " " << platform_rects[0][i].w << " " << present_platform_rects[i].h << endl;
                 }
                 outfile << "---------------------------------------------" << endl;
-                
-                
-                
-                
+
                 next_platform_rects = platform_rects[next_tilemap_index];
 
                 present_tilemap_pos_x = 0;

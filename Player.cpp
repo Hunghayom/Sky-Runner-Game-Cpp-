@@ -142,12 +142,8 @@ bool Player::fall(Player& player, vector<SDL_Rect>& platforms)
     {
         if (player.get_x() + player.get_width() > platforms[i].x && player.get_x() < platforms[i].x + platforms[i].w)
         {
-            //if (player.get_y() + player.get_height() >= platforms[i].y && player.get_y() + player.get_height() <= platforms[i].y + platforms[i].h)
             if (player.get_y() + player.get_height() == platforms[i].y)
             {
-                //player.set_y(platforms[i].y - player.get_height());
-                //player.set_speed(0);
-                //player.set_jumping(false);
                 return false;
             }
         }
@@ -159,7 +155,6 @@ bool Player::is_falling(Player& player, vector<SDL_Rect>& present_platforms, vec
 {
     if((fall(player, present_platforms) == 1 || fall(player, next_platforms) ==1) && (fall(player, present_platforms) == 0 || fall(player, next_platforms) == 0))
     {
-        //player.set_falling(false);
         return false;
     }
     else return true;

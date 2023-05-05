@@ -25,6 +25,7 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
     {
         cout << "SDL could not initialize! SDL_Error:" << SDL_GetError() << "\n";
         setRunning(false);
+        setPlaying(false);
     }
     else
     {
@@ -38,11 +39,13 @@ void Game::init(const char *tilte, int xpos, int ypos, int width, int height, bo
         {
             cout << "Window could not be created! SDL_Error: " << SDL_GetError() << "\n";
             setRunning(false);
+            setPlaying(false);
         }
         if (renderer == NULL)
         {
             cout << "Renderer could not be created! SDL_Error: " << SDL_GetError() << "\n";
             setRunning(false);
+            setPlaying(false);
         }
         setRunning(true);
     }
@@ -160,12 +163,33 @@ void Game::death_message(Player& player)
             if (player.get_y() < -20)
             {
                 cout << "You're flying out of the sky! Your score: " << getScore() << endl;
+                setPlaying(false);
                 setRunning(false);
             }
             else
             {
                 cout << "You're falling to the the ground! Your score: " << getScore() << endl;
+                setPlaying(false);
                 setRunning(false);
             }
         }
+}
+
+bool Game::playing()
+{
+    return isPlaying;
+}
+
+void Game::setPlaying(bool isPlaying)
+{
+    this->isPlaying = isPlaying;
+}
+
+bool Game::menu()
+{
+    return isMenu;
+}
+void Game::setMenu(bool isMenu)
+{
+    this->isMenu = isMenu;
 }
