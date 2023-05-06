@@ -162,7 +162,7 @@ bool Player::is_falling(Player& player, vector<SDL_Rect>& present_platforms, vec
 
 void Player::player_jumping(Player& player)
 {
-    if (player.get_jumping() == 1)
+    if (player.get_jumping() == 1 )
     {
         player.set_falling(0);
         player.set_y(player.get_y() - 10);

@@ -82,10 +82,6 @@ void Tilemap::set_platform_rects(std::vector<SDL_Rect> platform_rects)
     this->platform_rects = platform_rects;
 }
 
-/*SDL_Rect Tilemap::get_platform_element_rects(int number_of_platform)
-{
-    return platform_rects[number_of_platform];
-}*/
 
 vector <SDL_Rect> Tilemap::update_platform_rects(Tilemap& tilemap, int tilemap_pos_x)
 {

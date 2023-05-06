@@ -516,4 +516,7 @@ SDL_Rect tilemap17_platform_5 = {1040, 400, 200, 40};
 SDL_Rect array_of_platforms_17[5] = {tilemap17_platform_1, tilemap17_platform_2, tilemap17_platform_3, tilemap17_platform_4, tilemap17_platform_5};
 Tilemap Tilemap_17(1, tile_map_17, 5, array_of_platforms_17);
 
+Tilemap array_of_tilemap[18] = {Default_tilemap, Tilemap_1, Tilemap_2, Tilemap_3, Tilemap_4, Tilemap_5, Tilemap_6, Tilemap_7, Tilemap_8, Tilemap_9, Tilemap_10, Tilemap_11, Tilemap_12, Tilemap_13, Tilemap_14, Tilemap_15, Tilemap_16, Tilemap_17};
+vector<SDL_Rect> platform_rects[18] = {Default_tilemap.get_platform_rects(), Tilemap_1.get_platform_rects(), Tilemap_2.get_platform_rects(), Tilemap_3.get_platform_rects(), Tilemap_4.get_platform_rects(), Tilemap_5.get_platform_rects(), Tilemap_6.get_platform_rects(), Tilemap_7.get_platform_rects(), Tilemap_8.get_platform_rects(), Tilemap_9.get_platform_rects(), Tilemap_10.get_platform_rects(), Tilemap_11.get_platform_rects(), Tilemap_12.get_platform_rects(), Tilemap_13.get_platform_rects(), Tilemap_14.get_platform_rects(), Tilemap_15.get_platform_rects(), Tilemap_16.get_platform_rects(), Tilemap_17.get_platform_rects()};
+
 #endif /* Tilemap_data_hpp */
